@@ -1,11 +1,7 @@
-import { Text, View } from 'react-native'
+import FeedsView from '../feeds/views/FeedsView'
 
 const HomeView = () => {
-  return (
-    <View>
-      <Text>HomeView</Text>
-    </View>
-  )
+  return <FeedsView />
 }
 
 export default HomeView
