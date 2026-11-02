@@ -3,6 +3,7 @@ import ProfileDetailCover from '../components/ProfileDetailCover';
 import ProfileDetailDescription from '../components/ProfileDetailDescription';
 
 import { assetManager } from '@/configs/asset';
+import { useDialog } from '@/providers/dialog-prodiver';
 import { useSheet } from '@/providers/sheet-provider';
 import { Text } from "react-native";
 
@@ -12,6 +13,7 @@ interface Props {
 
 const ProfileDetailSection = ({ profileDetails }: Props) => {
       const { openSheet } = useSheet();
+      const { openDialog } = useDialog();
 
       const handleUsernameTap = (username: any) => {
             openSheet(<SheetContent />, ['20%', '30%']);
@@ -19,7 +21,7 @@ const ProfileDetailSection = ({ profileDetails }: Props) => {
 
       const handleProfileTap = () => {
             // Preview Profile Dialog
-            alert("Preview Profile inside the Dialog")
+            openDialog(<Text>Preview Profile inside the Dialog</Text>)
       };
 
       const handleCoverTap = () => {
