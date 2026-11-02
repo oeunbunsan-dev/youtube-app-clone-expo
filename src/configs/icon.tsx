@@ -6,7 +6,6 @@ interface IconProps {
   color?: string;
 }
 
-// 1. បង្កើត Type សម្រាប់កំណត់ប្រភេទ Icon ឱ្យបានច្បាស់លាស់
 type IconLibrary = 'Feather' | 'Entypo';
 
 interface CreateIconProps {
@@ -20,7 +19,7 @@ const DEFAULT_ICON_PROPS: Required<IconProps> = {
   color: 'black',
 };
 
-// 2. Helper Function ដែលអាចគាំទ្រទាំង Feather និង Entypo
+// 2. Helper Function
 const createIcon = ({ library, name }: CreateIconProps) => {
   return ({ size = DEFAULT_ICON_PROPS.size, color = DEFAULT_ICON_PROPS.color }: IconProps) => {
     if (library === 'Entypo') {
@@ -58,7 +57,6 @@ export const AppIcons = {
   Help: createIcon({ library: 'Feather', name: 'help-circle' }),
   Chat: createIcon({ library: 'Feather', name: 'message-square' }),
 
-  // ឧទាហរណ៍៖ ប្តូរមកប្រើ Entypo សម្រាប់ Menu
   Menu: createIcon({ library: 'Entypo', name: 'menu' }),
   dots: createIcon({ library: 'Entypo', name: 'dots-three-horizontal' }),
 

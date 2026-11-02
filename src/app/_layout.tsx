@@ -1,5 +1,7 @@
-import { Stack } from "expo-router";
+import { SheetProvider } from "@/providers/sheet-provider";
 import { PortalHost } from "@rn-primitives/portal";
+import { Stack } from "expo-router";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import "../../global.css";
 
@@ -16,10 +18,14 @@ const RootContent = () => {
 }
 
 export default function RootLayout() {
-  return <>
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }} edges={['top', 'bottom']}>
-      <RootContent />
-      <PortalHost />
-    </SafeAreaView>
-  </>
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }} edges={['top', 'bottom']}>
+        <SheetProvider>
+          <RootContent />
+          <PortalHost />
+        </SheetProvider>
+      </SafeAreaView>
+    </GestureHandlerRootView>
+  );
 }

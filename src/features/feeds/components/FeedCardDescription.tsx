@@ -1,4 +1,9 @@
-import Avatar from '@/components/common/Avatar';
+import Avatar from '@/components/common/AppAvatar';
+import {
+      Popover,
+      PopoverContent,
+      PopoverTrigger,
+} from "@/components/ui/popover";
 import { AppIcons } from '@/configs/icon';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -26,10 +31,25 @@ const FeedCardDescription = ({ title, description, name, avatarUrl, onProfileTap
                               </View>
                         </View>
                   </View>
+
                   <View>
-                        <TouchableOpacity style={{ width: 30, height: 30, backgroundColor: "#ffff", borderRadius: 100, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }} onPress={() => onSettingsTap?.()}>
-                              <AppIcons.dots size={16} color='#141313' />
-                        </TouchableOpacity>
+                        <Popover>
+                              <PopoverTrigger asChild>
+                                    <TouchableOpacity
+                                          style={styles.settingsButton}
+                                          onPress={() => onSettingsTap?.()}
+                                    >
+                                          <AppIcons.dots size={16} color='#141313' />
+                                    </TouchableOpacity>
+                              </PopoverTrigger>
+
+                              <PopoverContent insets={{ right: 16 }}>
+                                    <Text>Download</Text>
+                                    <Text>Share</Text>
+                                    <Text>Not Interested</Text>
+                                    <Text>Report</Text>
+                              </PopoverContent>
+                        </Popover>
                   </View>
             </View>
       )
@@ -41,8 +61,17 @@ const styles = StyleSheet.create({
             flexDirection: 'row',
             justifyContent: "space-between",
             alignItems: 'center',
-            paddingBlock: 10,
+            paddingVertical: 10,
+      },
+      settingsButton: {
+            width: 30,
+            height: 30,
+            backgroundColor: "#ffff",
+            borderRadius: 100,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center'
       }
 })
 
-export default FeedCardDescription
+export default FeedCardDescription;

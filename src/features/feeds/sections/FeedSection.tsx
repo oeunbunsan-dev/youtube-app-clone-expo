@@ -1,12 +1,7 @@
 import { assetManager } from '@/configs/asset';
 import { useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  useWindowDimensions,
-} from 'react-native';
+import { FlatList, StyleSheet, View, useWindowDimensions } from 'react-native';
 
 import FeedCard from '../components/FeedCard';
 
@@ -84,9 +79,9 @@ const FeedSection = () => {
   };
 
   const handleFeedCardTap = () => router.push("/video");
-  const handleProfileTap = (item : any) => {
+  const handleProfileTap = (item: any) => {
     router.push(`/profile/${1}`); // Navigate to profile with id 1 for demonstration
-  }
+  };
 
   return (
     <View style={styles.container}>

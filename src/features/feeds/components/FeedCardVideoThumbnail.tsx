@@ -22,7 +22,7 @@ const FeedCardVideoThumbnail = ({ isMuted, thumbnailUrl, onToggleVolume }: Props
 
       <View style={styles.volumeButtonContainer}>
         <TouchableOpacity onPress={() => onToggleVolume?.()}>
-          {/* Used Conditional Rendering (Ternary Operator) ដើម្បី Toggle Icon */}
+          {/* Used Conditional Rendering (Ternary Operator) for Toggle Icon */}
           {isMuted ? (
             <AppIcons.VolumeX size={16} color="#ffff" />
           ) : (
