@@ -2,6 +2,7 @@ import AppBar from '@/components/layouts/AppBar'
 import PaddingContainer from '@/components/layouts/PaddingContainer'
 import FeedSection from '../sections/FeedSection'
 
+import { ThemedText } from '@/components/common/ThemedText'
 import { useDialog } from '@/providers/dialog-prodiver'
 import { useLoading } from '@/providers/loading-provider'
 import { Button, Text, View } from 'react-native'
@@ -57,6 +58,8 @@ const FeedsView = () => {
       </PaddingContainer>
       <Button title='Open' onPress={handleOpenProfileDialog}></Button>
       <Button title='Login' onPress={handleLogin}></Button>
+      
+      <ThemedText>បងស្រលាញ់បងណាស់</ThemedText>
 
       <FeedSection />
     </View>
