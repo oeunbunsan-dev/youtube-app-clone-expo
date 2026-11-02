@@ -1,6 +1,12 @@
+import { assetManager } from '@/configs/asset';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { useEffect, useMemo, useState } from 'react';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 
 import FeedCard from '../components/FeedCard';
 
@@ -9,18 +15,18 @@ const FeedArrayObject = [
     id: 1,
     title: "Sample Feed Title",
     description: "Sample feed description",
-    thumbnailUrl: "https://example.com/thumbnail.jpg",
+    thumbnailUrl: assetManager.images.image1,
     videoUrl: "https://example.com/video.mp4",
     profile: {
       name: "John Doe",
-      avatarUrl: "https://example.com/avatar.jpg"
+      avatarUrl: assetManager.images.image1
     }
   },
   {
     id: 2,
     title: "Another Feed Title",
     description: "Another feed description",
-    thumbnailUrl: "https://example.com/thumbnail2.jpg",
+    thumbnailUrl: assetManager.images.image2,
     videoUrl: "https://example.com/video2.mp4",
     profile: {
       name: "Jane Smith",
@@ -51,54 +57,86 @@ const FeedArrayObject = [
   }
 ];
 
-
 const FeedSection = () => {
   const router = useRouter();
+  const { width } = useWindowDimensions();
+
+  const [isMounted, setIsMounted] = useState(false);
   const [unmutedCardId, setUnmutedCardId] = useState<number | null>(null);
-  const [feedData, _] = useState(FeedArrayObject);
+  const [feedData] = useState(FeedArrayObject);
+
+  // Prevent SSR mismatch: mark when mounted on the client
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // During SSR, default to 1 column so server and initial client render match
+  const numColumns = useMemo(() => {
+    if (!isMounted) return 1;
+    if (width >= 1200) return 4;
+    if (width >= 900) return 3;
+    if (width >= 600) return 2;
+    return 1;
+  }, [width, isMounted]);
 
   const handleToggleVolume = (cardId: number) => {
     setUnmutedCardId(cardId === unmutedCardId ? null : cardId);
   };
 
-  const handleFeedCardTap = (item?: any) => {
-    router.push("/video");
+  const handleFeedCardTap = () => router.push("/video");
+  const handleProfileTap = (item : any) => {
+    router.push(`/profile/${1}`); // Navigate to profile with id 1 for demonstration
   }
-  const handleProfileTap = (item?: any) => {
-    router.push("/profile");
-  };
-
-  const handleSettingTap = () => {
-    router.push("/settings")
-  }
-
 
   return (
     <View style={styles.container}>
       <FlatList
+        key={`feed-grid-${numColumns}`}
         data={feedData}
-        renderItem={({ item }) => (
-          <FeedCard
-            feedCardObject={item}
-            isMuted={unmutedCardId !== item.id}
-            onToggleVolume={() => handleToggleVolume(item.id)}
-            onFeedCardTap={handleFeedCardTap}
-            onProfileTap={handleProfileTap}
-            onSettingsTap={handleSettingTap}
-          />
-        )}
+        keyExtractor={(item) => item.id.toString()}
+        numColumns={numColumns}
+        columnWrapperStyle={numColumns > 1 ? styles.columnWrapper : undefined}
+        contentContainerStyle={[
+          styles.listContent,
+          { maxWidth: 1400, alignSelf: 'center', width: '100%' }
+        ]}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        renderItem={({ item }) => (
+          <View
+            style={[
+              styles.cardWrapper,
+              numColumns > 1 && { flex: 1 / numColumns }
+            ]}
+          >
+            <FeedCard
+              feedCardObject={item}
+              isMuted={unmutedCardId !== item.id}
+              onToggleVolume={() => handleToggleVolume(item.id)}
+              onFeedCardTap={handleFeedCardTap}
+              onProfileTap={handleProfileTap}
+            />
+          </View>
+        )}
       />
     </View>
   );
-}
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
+    backgroundColor: '#fff',
   },
-
+  listContent: {
+    paddingTop: 12,
+    paddingBottom: 24,
+  },
+  columnWrapper: {
+    gap: 16,
+  },
+  cardWrapper: {
+    marginBottom: 16,
+  },
 });
 
-export default FeedSection
+export default FeedSection;

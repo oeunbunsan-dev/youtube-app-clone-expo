@@ -5,7 +5,7 @@ const Avatar = ({ image }: { image?: string }) => {
       return (
             <View style={styles.container}>
                   <Image
-                        source={image ? { uri: image } : ""}
+                        source={image}
                         style={{ width: '100%', height: '100%', borderRadius: 100 }}
                         contentFit="cover"
                         transition={1000}
