@@ -1,5 +1,6 @@
 import Avatar from '@/components/common/AppAvatar';
 import AppButton from '@/components/common/AppButton';
+
 import { assetManager } from '@/configs/asset';
 import { Text, TouchableOpacity, View } from 'react-native';
 
@@ -13,7 +14,7 @@ const ProfileDetailDescription = ({ onProfileTap, onUsernameTap }: Props) => {
       return (
             <>
                   <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center' }}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => onProfileTap?.()}>
                               <Avatar size="lg" image={assetManager.images.image2} />
                         </TouchableOpacity>
 

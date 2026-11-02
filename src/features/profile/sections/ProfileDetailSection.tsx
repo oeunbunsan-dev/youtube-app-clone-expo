@@ -19,6 +19,7 @@ const ProfileDetailSection = ({ profileDetails }: Props) => {
 
       const handleProfileTap = () => {
             // Preview Profile Dialog
+            alert("Preview Profile inside the Dialog")
       };
 
       const handleCoverTap = () => {

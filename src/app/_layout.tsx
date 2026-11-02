@@ -1,8 +1,9 @@
-import { SheetProvider } from "@/providers/sheet-provider";
+import { AppProvider } from "@/providers/app-provider";
 import { PortalHost } from "@rn-primitives/portal";
 import { Stack } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import "../../global.css";
 
 
@@ -21,10 +22,10 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }} edges={['top', 'bottom']}>
-        <SheetProvider>
+        <AppProvider>
           <RootContent />
           <PortalHost />
-        </SheetProvider>
+        </AppProvider>
       </SafeAreaView>
     </GestureHandlerRootView>
   );

@@ -1,0 +1,20 @@
+import { DialogProvider } from '@/providers/dialog-prodiver';
+import { LoadingProvider } from '@/providers/loading-provider';
+import { SheetProvider } from '@/providers/sheet-provider';
+import { ReactNode } from 'react';
+
+interface AppProviderProps {
+      children: ReactNode;
+}
+
+export const AppProvider = ({ children }: AppProviderProps) => {
+      return (
+            <LoadingProvider>
+                  <DialogProvider>
+                        <SheetProvider>
+                              {children}
+                        </SheetProvider>
+                  </DialogProvider>
+            </LoadingProvider>
+      );
+};
