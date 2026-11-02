@@ -1,6 +1,8 @@
+import PaddingContainer from '@/components/layouts/PaddingContainer';
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import FeedCardDescription from './FeedCardDescription';
 import FeedCardVideoThumbnail from './FeedCardVideoThumbnail';
+
 
 interface Props {
   feedCardObject?: any;
@@ -20,9 +22,8 @@ const FeedCard = ({
   onSettingsTap,
   onToggleVolume
 }: Props) => {
-  const { id, title, description, thumbnailUrl, videoUrl, profile } = feedCardObject || {};
+  const { title, description, thumbnailUrl, videoUrl, profile } = feedCardObject || {};
   const { name, avatarUrl } = profile || {};
-
 
   return (
     <TouchableWithoutFeedback onPress={() => onFeedCardTap && onFeedCardTap()}>
@@ -32,14 +33,16 @@ const FeedCard = ({
           isMuted={isMuted} // Pass the state value to the child
           onToggleVolume={() => onToggleVolume?.()}
         />
-        <FeedCardDescription
-          title={title}
-          description={description}
-          name={name}
-          avatarUrl={avatarUrl}
-          onProfileTap={() => onProfileTap && onProfileTap("Profile tap")}
-          onSettingsTap={() => onSettingsTap?.()}
-        />
+        <PaddingContainer>
+          <FeedCardDescription
+            title={title}
+            description={description}
+            name={name}
+            avatarUrl={avatarUrl}
+            onProfileTap={() => onProfileTap && onProfileTap("Profile tap")}
+            onSettingsTap={() => onSettingsTap?.()}
+          />
+        </PaddingContainer>
       </View>
     </TouchableWithoutFeedback>
   )

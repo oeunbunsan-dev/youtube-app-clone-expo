@@ -27,7 +27,7 @@ const FeedCardDescription = ({ title, description, name, avatarUrl, onProfileTap
                         </View>
                   </View>
                   <View>
-                        <TouchableOpacity style={{ width: 30, height: 30, backgroundColor: "lightgray", borderRadius: 100, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }} onPress={() => onSettingsTap?.()}>
+                        <TouchableOpacity style={{ width: 30, height: 30, backgroundColor: "#ffff", borderRadius: 100, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }} onPress={() => onSettingsTap?.()}>
                               <AppIcons.dots size={16} color='#141313' />
                         </TouchableOpacity>
                   </View>

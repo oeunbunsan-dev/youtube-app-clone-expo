@@ -1,4 +1,3 @@
-import { assetManager } from '@/configs/asset';
 import { AppIcons } from '@/configs/icon';
 import { Image } from 'expo-image';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
@@ -13,7 +12,7 @@ const FeedCardVideoThumbnail = ({ isMuted, thumbnailUrl, onToggleVolume }: Props
   return (
     <View style={styles.container}>
       <Image
-        source={thumbnailUrl ? { uri: thumbnailUrl } : assetManager.images.image2}
+        source={thumbnailUrl}
         style={{ width: '100%', height: '100%' }}
         contentFit="cover"
         contentPosition="top"
@@ -23,7 +22,7 @@ const FeedCardVideoThumbnail = ({ isMuted, thumbnailUrl, onToggleVolume }: Props
 
       <View style={styles.volumeButtonContainer}>
         <TouchableOpacity onPress={() => onToggleVolume?.()}>
-          {/* ប្រើប្រាស់ Conditional Rendering (Ternary Operator) ដើម្បី Toggle Icon */}
+          {/* Used Conditional Rendering (Ternary Operator) ដើម្បី Toggle Icon */}
           {isMuted ? (
             <AppIcons.VolumeX size={16} color="#ffff" />
           ) : (
