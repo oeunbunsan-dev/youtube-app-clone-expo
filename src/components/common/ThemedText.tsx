@@ -3,6 +3,7 @@ import React from 'react';
 import { BASE_TYPOGRAPHY } from '@/constants/font-size';
 import { useAppSettings } from '@/providers/app-settings-provider';
 import { containsKhmerText } from '@/utils';
+import type { AppTheme } from '@/constants/themes';
 import { Text as RNText, TextProps as RNTextProps, StyleProp, TextStyle } from 'react-native';
 
 export type TextVariant =
@@ -33,6 +34,17 @@ export interface ThemedTextProps extends RNTextProps {
   style?: StyleProp<TextStyle>;
 }
 
+const textColorSelectors: Record<TextColorType, (theme: AppTheme) => string> = {
+  default: (theme) => theme.colors.text,
+  secondary: (theme) => theme.colors.textSecondary,
+  muted: (theme) => theme.colors.textMuted,
+  primary: (theme) => theme.colors.primary,
+  accent: (theme) => theme.colors.accent,
+  danger: (theme) => theme.colors.danger,
+  success: (theme) => theme.colors.success,
+  inverse: (theme) => theme.isDark ? '#000000' : '#FFFFFF',
+};
+
 export const ThemedText: React.FC<ThemedTextProps> = ({
   children,
   variant = 'body',
@@ -47,31 +59,7 @@ export const ThemedText: React.FC<ThemedTextProps> = ({
 
   const baseSize = BASE_TYPOGRAPHY[variant] || BASE_TYPOGRAPHY.body;
   const scaledSize = scale(baseSize);
-
-  let textColor = theme.colors.text;
-  switch (colorType) {
-    case 'secondary':
-      textColor = theme.colors.textSecondary;
-      break;
-    case 'muted':
-      textColor = theme.colors.textMuted;
-      break;
-    case 'primary':
-      textColor = theme.colors.primary;
-      break;
-    case 'accent':
-      textColor = theme.colors.accent;
-      break;
-    case 'danger':
-      textColor = theme.colors.danger;
-      break;
-    case 'success':
-      textColor = theme.colors.success;
-      break;
-    case 'inverse':
-      textColor = theme.isDark ? '#000000' : '#FFFFFF';
-      break;
-  }
+  const textColor = textColorSelectors[colorType](theme);
 
   const activeLanguage = forceLanguage ?? (containsKhmerText(children) ? 'km' : undefined);
   const fontFamily = customFont || getActiveFont(bold || variant === 'hero' || variant === 'header' || variant === 'title', activeLanguage);

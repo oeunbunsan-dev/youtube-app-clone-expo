@@ -1,11 +1,12 @@
 import { assetManager } from '@/configs/asset';
 import { useRouter } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, View, useWindowDimensions } from 'react-native';
 
 import FeedCard from '../components/FeedCard';
+import type { FeedItem, FeedProfile } from '../types';
 
-const FeedArrayObject = [
+const feedData: FeedItem[] = [
   {
     id: 1,
     title: "Sample Feed Title",
@@ -55,33 +56,33 @@ const FeedArrayObject = [
 const FeedSection = () => {
   const router = useRouter();
   const { width } = useWindowDimensions();
-
-  const [isMounted, setIsMounted] = useState(false);
   const [unmutedCardId, setUnmutedCardId] = useState<number | null>(null);
-  const [feedData] = useState(FeedArrayObject);
+  const numColumns = width >= 1200 ? 4 : width >= 900 ? 3 : width >= 600 ? 2 : 1;
 
-  // Prevent SSR mismatch: mark when mounted on the client
-  useEffect(() => {
-    setIsMounted(true);
+  const handleToggleVolume = useCallback((cardId: number) => {
+    setUnmutedCardId((currentCardId) => currentCardId === cardId ? null : cardId);
   }, []);
+  const handleFeedCardTap = useCallback(() => router.push('/video'), [router]);
+  const handleProfileTap = useCallback((_profile: FeedProfile) => {
+    router.push('/profile/1');
+  }, [router]);
 
-  // During SSR, default to 1 column so server and initial client render match
-  const numColumns = useMemo(() => {
-    if (!isMounted) return 1;
-    if (width >= 1200) return 4;
-    if (width >= 900) return 3;
-    if (width >= 600) return 2;
-    return 1;
-  }, [width, isMounted]);
-
-  const handleToggleVolume = (cardId: number) => {
-    setUnmutedCardId(cardId === unmutedCardId ? null : cardId);
-  };
-
-  const handleFeedCardTap = () => router.push("/video");
-  const handleProfileTap = (item: any) => {
-    router.push(`/profile/${1}`); // Navigate to profile with id 1 for demonstration
-  };
+  const renderItem = useCallback(({ item }: { item: FeedItem }) => (
+    <View
+      style={[
+        styles.cardWrapper,
+        numColumns > 1 && { flex: 1 / numColumns }
+      ]}
+    >
+      <FeedCard
+        feedCardObject={item}
+        isMuted={unmutedCardId !== item.id}
+        onToggleVolume={handleToggleVolume}
+        onFeedCardTap={handleFeedCardTap}
+        onProfileTap={handleProfileTap}
+      />
+    </View>
+  ), [handleFeedCardTap, handleProfileTap, handleToggleVolume, numColumns, unmutedCardId]);
 
   return (
     <View style={styles.container}>
@@ -96,22 +97,7 @@ const FeedSection = () => {
           { maxWidth: 1400, alignSelf: 'center', width: '100%' }
         ]}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <View
-            style={[
-              styles.cardWrapper,
-              numColumns > 1 && { flex: 1 / numColumns }
-            ]}
-          >
-            <FeedCard
-              feedCardObject={item}
-              isMuted={unmutedCardId !== item.id}
-              onToggleVolume={() => handleToggleVolume(item.id)}
-              onFeedCardTap={handleFeedCardTap}
-              onProfileTap={handleProfileTap}
-            />
-          </View>
-        )}
+        renderItem={renderItem}
       />
     </View>
   );

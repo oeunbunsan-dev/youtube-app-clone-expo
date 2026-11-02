@@ -6,22 +6,29 @@ import {
 } from "@/components/ui/popover";
 import { AppIcons } from '@/configs/icon';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import type { FeedImageSource, FeedProfile } from '../types';
 
 interface Props {
       title?: string;
       description?: string;
       name?: string;
-      avatarUrl?: string;
+      avatarUrl?: FeedImageSource;
 
-      onProfileTap?: (item?: any) => void;
-      onSettingsTap?: (item?: any) => void;
+      onProfileTap?: (profile: FeedProfile) => void;
+      onSettingsTap?: () => void;
 }
 
 const FeedCardDescription = ({ title, description, name, avatarUrl, onProfileTap, onSettingsTap }: Props) => {
+      const handleProfileTap = () => {
+            if (name !== undefined && avatarUrl !== undefined) {
+                  onProfileTap?.({ name, avatarUrl });
+            }
+      };
+
       return (
             <View style={styles.container}>
                   <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                        <TouchableOpacity onPress={() => onProfileTap && onProfileTap({ name, avatarUrl })}>
+                        <TouchableOpacity onPress={handleProfileTap}>
                               <Avatar image={avatarUrl} />
                         </TouchableOpacity>
                         <View>
@@ -37,7 +44,7 @@ const FeedCardDescription = ({ title, description, name, avatarUrl, onProfileTap
                               <PopoverTrigger asChild>
                                     <TouchableOpacity
                                           style={styles.settingsButton}
-                                          onPress={() => onSettingsTap?.()}
+                                          onPress={onSettingsTap}
                                     >
                                           <AppIcons.dots size={16} color='#141313' />
                                     </TouchableOpacity>

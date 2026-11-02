@@ -79,39 +79,40 @@ export function AppSettingsProvider({ children }: { children: React.ReactNode })
       // Load saved preferences on mount
       useEffect(() => {
             async function loadSettings() {
+                  let savedSettings: [string | null, string | null, string | null, string | null, string | null];
                   try {
-                        const [savedLang, savedTheme, savedKhmerFont, savedEnglishFont, savedFontSize] =
-                              await Promise.all([
-                                    AsyncStorage.getItem(STORAGE_KEYS.LANGUAGE),
-                                    AsyncStorage.getItem(STORAGE_KEYS.THEME),
-                                    AsyncStorage.getItem(STORAGE_KEYS.KHMER_FONT),
-                                    AsyncStorage.getItem(STORAGE_KEYS.ENGLISH_FONT),
-                                    AsyncStorage.getItem(STORAGE_KEYS.FONT_SIZE),
-                              ]);
-
-                        if (savedLang && (savedLang === 'en' || savedLang === 'km' || savedLang === 'zh')) {
-                              setLanguageState(savedLang as SupportedLanguage);
-                        }
-                        if (savedTheme && APP_THEMES.some((t) => t.id === savedTheme)) {
-                              setThemeIdState(savedTheme);
-                        }
-                        if (savedKhmerFont && KHMER_FONTS.some((f) => f.id === savedKhmerFont)) {
-                              setKhmerFontIdState(savedKhmerFont);
-                        }
-                        if (savedEnglishFont && ENGLISH_FONTS.some((f) => f.id === savedEnglishFont)) {
-                              setEnglishFontIdState(savedEnglishFont);
-                        }
-                        if (
-                              savedFontSize &&
-                              ['small', 'normal', 'medium', 'large', 'extraLarge'].includes(savedFontSize)
-                        ) {
-                              setFontSizeKeyState(savedFontSize as FontSizeKey);
-                        }
+                        savedSettings = await Promise.all([
+                              AsyncStorage.getItem(STORAGE_KEYS.LANGUAGE),
+                              AsyncStorage.getItem(STORAGE_KEYS.THEME),
+                              AsyncStorage.getItem(STORAGE_KEYS.KHMER_FONT),
+                              AsyncStorage.getItem(STORAGE_KEYS.ENGLISH_FONT),
+                              AsyncStorage.getItem(STORAGE_KEYS.FONT_SIZE),
+                        ]);
                   } catch (e) {
                         console.warn('Failed to load settings from storage', e);
-                  } finally {
-                        setIsReady(true);
+                        savedSettings = [null, null, null, null, null];
                   }
+
+                  const [savedLang, savedTheme, savedKhmerFont, savedEnglishFont, savedFontSize] = savedSettings;
+                  if (savedLang && (savedLang === 'en' || savedLang === 'km' || savedLang === 'zh')) {
+                        setLanguageState(savedLang as SupportedLanguage);
+                  }
+                  if (savedTheme && APP_THEMES.some((t) => t.id === savedTheme)) {
+                        setThemeIdState(savedTheme);
+                  }
+                  if (savedKhmerFont && KHMER_FONTS.some((f) => f.id === savedKhmerFont)) {
+                        setKhmerFontIdState(savedKhmerFont);
+                  }
+                  if (savedEnglishFont && ENGLISH_FONTS.some((f) => f.id === savedEnglishFont)) {
+                        setEnglishFontIdState(savedEnglishFont);
+                  }
+                  if (
+                        savedFontSize &&
+                        ['small', 'normal', 'medium', 'large', 'extraLarge'].includes(savedFontSize)
+                  ) {
+                        setFontSizeKeyState(savedFontSize as FontSizeKey);
+                  }
+                  setIsReady(true);
             }
 
             loadSettings();

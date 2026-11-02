@@ -1,10 +1,11 @@
 import { AppIcons } from '@/configs/icon';
 import { Image } from 'expo-image';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import type { FeedImageSource } from '../types';
 
 interface Props {
   isMuted ?: boolean;
-  thumbnailUrl?: string;
+  thumbnailUrl?: FeedImageSource;
   onToggleVolume?: () => void;
 }
 

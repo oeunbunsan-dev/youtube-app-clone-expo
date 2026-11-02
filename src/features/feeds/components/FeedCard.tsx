@@ -1,52 +1,52 @@
 import PaddingContainer from '@/components/layouts/PaddingContainer';
+import { memo } from 'react';
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import FeedCardDescription from './FeedCardDescription';
 import FeedCardVideoThumbnail from './FeedCardVideoThumbnail';
+import type { FeedItem, FeedProfile } from '../types';
 
 
 interface Props {
-  feedCardObject?: any;
-  isMuted: boolean; //  Props (Mute/Unmute)
-
-  onFeedCardTap?: (item?: any) => any;
-  onProfileTap?: (item?: any) => any;
-  onSettingsTap?: (item?: any) => any;
-  onToggleVolume?: () => void;
+  feedCardObject: FeedItem;
+  isMuted: boolean;
+  onFeedCardTap?: () => void;
+  onProfileTap?: (profile: FeedProfile) => void;
+  onSettingsTap?: () => void;
+  onToggleVolume?: (cardId: number) => void;
 }
 
-const FeedCard = ({
+const FeedCard = memo(({
   feedCardObject,
-  isMuted, // get isMuted from Props
+  isMuted,
   onFeedCardTap,
   onProfileTap,
   onSettingsTap,
   onToggleVolume
 }: Props) => {
-  const { title, description, thumbnailUrl, videoUrl, profile } = feedCardObject || {};
-  const { name, avatarUrl } = profile || {};
+  const { title, description, thumbnailUrl, id, profile } = feedCardObject;
 
   return (
-    <TouchableWithoutFeedback onPress={() => onFeedCardTap && onFeedCardTap()}>
+    <TouchableWithoutFeedback onPress={onFeedCardTap}>
       <View style={styles.container}>
         <FeedCardVideoThumbnail
           thumbnailUrl={thumbnailUrl}
-          isMuted={isMuted} // Pass the state value to the child
-          onToggleVolume={() => onToggleVolume?.()}
+          isMuted={isMuted}
+          onToggleVolume={() => onToggleVolume?.(id)}
         />
         <PaddingContainer>
           <FeedCardDescription
             title={title}
             description={description}
-            name={name}
-            avatarUrl={avatarUrl}
-            onProfileTap={() => onProfileTap && onProfileTap("Profile tap")}
-            onSettingsTap={() => onSettingsTap?.()}
+            name={profile.name}
+            avatarUrl={profile.avatarUrl}
+            onProfileTap={onProfileTap}
+            onSettingsTap={onSettingsTap}
           />
         </PaddingContainer>
       </View>
     </TouchableWithoutFeedback>
   )
-}
+});
 
 const styles = StyleSheet.create({
   container: {
