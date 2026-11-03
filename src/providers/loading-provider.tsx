@@ -21,13 +21,13 @@ export const LoadingProvider = ({ children }: LoadingProviderProps) => {
       const [isLoading, setIsLoading] = useState(false);
       const [message, setMessage] = useState<string | undefined>(undefined);
 
-      // មុខងារបើក Loading Overlay (អាចដាក់ Text ឬមិនដាក់ក៏បាន)
+      console.log("Loading provider is working...")
+
       const showLoading = useCallback((loadingMessage?: string) => {
             setMessage(loadingMessage);
             setIsLoading(true);
       }, []);
 
-      // មុខងារបិទ Loading Overlay
       const hideLoading = useCallback(() => {
             setIsLoading(false);
             setMessage(undefined);
@@ -37,7 +37,6 @@ export const LoadingProvider = ({ children }: LoadingProviderProps) => {
             <LoadingContext.Provider value={{ showLoading, hideLoading, isLoading }}>
                   {children}
 
-                  {/* ផ្ទាំង Loading Overlay ពេញអេក្រង់ */}
                   {isLoading && (
                         <View style={StyleSheet.absoluteFill} className="bg-black/50 items-center justify-center z-[9999]">
                               <View className="bg-background p-6 rounded-2xl items-center justify-center min-w-[120px] shadow-lg border border-border">

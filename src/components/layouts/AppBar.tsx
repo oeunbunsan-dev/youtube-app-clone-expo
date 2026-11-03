@@ -4,6 +4,7 @@ import { Image } from 'expo-image'
 import { StyleSheet, View } from 'react-native'
 
 const AppBar = () => {
+  console.log("AppBar render...")
   return (
     <View style={styles.appBarContainer}>
       <Image

@@ -6,17 +6,18 @@ import { AppSettingsProvider } from './app-settings-provider';
 
 interface AppProviderProps {
       children: ReactNode;
-}
+};
 
+// This file is gives every child components to access the loading, dialog, sheet and app settings.
 export const AppProvider = ({ children }: AppProviderProps) => {
       return (
             <LoadingProvider>
                   <DialogProvider>
-                        <SheetProvider>
-                              <AppSettingsProvider>
+                        <AppSettingsProvider>
+                              <SheetProvider>
                                     {children}
-                              </AppSettingsProvider>
-                        </SheetProvider>
+                              </SheetProvider>
+                        </AppSettingsProvider>
                   </DialogProvider>
             </LoadingProvider>
       );
